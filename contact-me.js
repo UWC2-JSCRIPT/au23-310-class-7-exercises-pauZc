@@ -20,6 +20,9 @@ const handleSelect = (selectElement) => {
        $jobTitle.parent().removeClass('hidden')
        $companyWebSite.parent().removeClass('hidden')
        $codingLanguages.parent().addClass('hidden')
+       $companyWebSite.prop('required',true)
+       $jobTitle.prop('required',true)
+
     }else if(selectedValue === 'talkCode'){
        /*
        *    IF "Talk code" is selected, should show the following item:
@@ -28,11 +31,19 @@ const handleSelect = (selectElement) => {
        $jobTitle.parent().addClass('hidden')
        $companyWebSite.parent().addClass('hidden')
        $codingLanguages.parent().removeClass('hidden')
+       $companyWebSite.prop('required',false)
+       $jobTitle.prop('required',false)
     }
     
 }
 $reasonForContacting.on('change', () => handleSelect($reasonForContacting))
-
+$codingLanguages.on('change',() => {
+    if($codingLanguages.val() == 'choose'){
+        $codingLanguages.parent().addClass('invalid')
+    }else{
+        $codingLanguages.parent().removeClass('invalid')
+    }
+})
 /*
  * 2. Should contain validation for the following items.  A message should appear for each invalid item (after submit):
  *  Name: is required, must be 3 or more characters
@@ -69,7 +80,7 @@ $form.on('submit', (e) =>{
         $name.parent().before(`<span>Name: is required, must be 3 or more characters</span`)
     }
     if(!validateEmail($email)){
-        $email.parent().before(`<span>Email: is required, Invalid Format!</span`)
+        $email.parent().before(`<span>Email: Invalid Format! </span`)
     }
     if(!validLength($message, 10)){
         $message.parent().before(`<span>Message: is required, must be 10 or more characters</span`)
